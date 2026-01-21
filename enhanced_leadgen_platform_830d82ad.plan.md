@@ -90,6 +90,12 @@ todos:
 
 # Enhanced Lead Generation Platform v2.0
 
+## Executive Summary
+
+Build a comprehensive AI-powered lead generation platform for your software development agency specializing in AI and data analysis. The platform automates the entire lead lifecycle - from discovery to closed deal - using intelligent scoring, personalized multi-channel outreach, and predictive analytics. Designed for internal use first, with full SaaS scalability.
+
+---
+
 ## Analysis: What's Missing in the Original Plan
 
 After researching leading tools (Clay, Apollo, Smartlead, Instantly, Drift, Genesy) and market trends, I identified these critical gaps:
@@ -112,45 +118,68 @@ After researching leading tools (Clay, Apollo, Smartlead, Instantly, Drift, Gene
 
 | No landing page builder | Dependency on external tools | Add drag-and-drop builder with A/B testing |
 
-## Updated Feature Set (Prioritized)
+---
 
-### Tier 1: Core MVP Features
+## System Architecture
 
 ```mermaid
-flowchart LR
-    subgraph inbound [Inbound Capture]
-        A[Website Visitor Tracking]
-        B[Smart Forms]
-        C[Chatbot/AI Assistant]
-        D[Landing Page Builder]
+flowchart TB
+    subgraph clients [Client Touchpoints]
+        Website[Your Website]
+        LandingPages[Landing Pages]
+        LinkedIn[LinkedIn]
+        EmailClient[Email]
+        Chat[Chat Widget]
     end
-    
+
+    subgraph capture [Inbound Capture Layer]
+        VisitorTrack[Visitor Tracking]
+        Chatbot[AI Chatbot]
+        Forms[Smart Forms]
+        PageBuilder[Landing Page Builder]
+    end
+
     subgraph outbound [Outbound Engine]
-        E[Email Sequences]
-        F[LinkedIn Automation]
-        G[AI Content Generation]
+        Sequences[Sequence Engine]
+        EmailSender[Email Sender]
+        LinkedInAuto[LinkedIn Automation]
+        SMSEngine[SMS/WhatsApp]
+        AISdr[AI SDR Agent]
     end
-    
+
     subgraph intelligence [Intelligence Layer]
-        H[Lead Enrichment]
-        I[Lead Scoring]
-        J[Intent Signals]
+        Enrichment[Data Enrichment]
+        Scoring[Lead Scoring ML]
+        Intent[Intent Signals]
+        ICP[ICP Matching]
     end
-    
-    subgraph pipeline [Pipeline Management]
-        K[CRM/Deals]
-        L[Analytics]
-        M[Integrations]
+
+    subgraph core [Core Platform]
+        CRM[CRM/Pipeline]
+        Inbox[Unified Inbox]
+        Analytics[Analytics Engine]
+        Integrations[Integration Hub]
     end
-    
-    inbound --> intelligence
+
+    subgraph data [Data Layer]
+        Postgres[(PostgreSQL)]
+        Redis[(Redis)]
+        Vector[(Vector DB)]
+        Queue[Job Queue]
+    end
+
+    clients --> capture
+    capture --> intelligence
     outbound --> intelligence
-    intelligence --> pipeline
+    intelligence --> core
+    core --> data
 ```
 
-### Complete Feature Breakdown
+---
 
-#### 1. INBOUND LEAD CAPTURE (New)
+## Complete Feature Breakdown
+
+### 1. INBOUND LEAD CAPTURE
 
 | Feature | Description | Lead Gen Impact |
 
@@ -166,7 +195,7 @@ flowchart LR
 
 | **Lead Magnets** | Interactive calculators, quizzes, ROI tools | Generate qualified leads with built-in qualification data |
 
-#### 2. OUTBOUND AUTOMATION (Enhanced)
+### 2. OUTBOUND AUTOMATION
 
 | Feature | Description | Lead Gen Impact |
 
@@ -184,7 +213,7 @@ flowchart LR
 
 | **Reply Detection & Routing** | Auto-detect positive/negative/OOO replies, route to appropriate workflow | Faster response to interested leads; don't waste time on rejections |
 
-#### 3. INTELLIGENCE & DATA LAYER (Significantly Enhanced)
+### 3. INTELLIGENCE & DATA LAYER
 
 | Feature | Description | Lead Gen Impact |
 
@@ -202,7 +231,7 @@ flowchart LR
 
 | **ICP Matching** | Match leads against your Ideal Customer Profile using ML similarity | Find more "lookalike" companies to your best customers |
 
-#### 4. AI-POWERED CONTENT (Enhanced)
+### 4. AI-POWERED CONTENT
 
 | Feature | Description | Lead Gen Impact |
 
@@ -218,7 +247,7 @@ flowchart LR
 
 | **Subject Line Optimizer** | A/B test and ML-optimize email subject lines | 15-25% improvement in open rates |
 
-#### 5. CRM & PIPELINE (Enhanced)
+### 5. CRM & PIPELINE
 
 | Feature | Description | Lead Gen Impact |
 
@@ -236,7 +265,7 @@ flowchart LR
 
 | **SLA Monitoring** | Alert when leads aren't contacted within SLA | Ensure fast response times |
 
-#### 6. ANALYTICS & OPTIMIZATION (Enhanced)
+### 6. ANALYTICS & OPTIMIZATION
 
 | Feature | Description | Lead Gen Impact |
 
@@ -254,36 +283,58 @@ flowchart LR
 
 | **Real-Time Dashboards** | Live metrics: today's leads, active sequences, reply rates | Actionable insights at a glance |
 
-## Updated Tech Stack
+### 7. INTEGRATIONS & COMPLIANCE
 
-### Primary Stack (Modern AI SaaS Architecture)
+| Feature | Description | Lead Gen Impact |
+
+|---------|-------------|-----------------|
+
+| **CRM Sync** | Bi-directional sync with HubSpot, Salesforce, Pipedrive | No data silos; use existing tools |
+
+| **Calendar Integration** | Google Calendar, Outlook, Cal.com | Seamless meeting scheduling |
+
+| **Slack/Teams Alerts** | Real-time notifications for hot leads, replies, deals | Fast response times |
+
+| **Zapier/Webhooks** | Connect to 5000+ apps | Flexible automation |
+
+| **GDPR/CCPA Compliance** | Consent management, data export/deletion, audit logs | Legal compliance; build trust |
+
+| **Email Deliverability** | SPF/DKIM/DMARC setup, bounce handling, reputation monitoring | Maintain inbox placement |
+
+---
+
+## Tech Stack
+
+### Architecture Diagram
 
 ```mermaid
 flowchart TB
     subgraph frontend [Frontend Layer]
-        NextJS[Next.js 14 App Router]
+        NextJS[Next.js 15 App Router]
         ShadcnUI[shadcn/ui + Tailwind]
         ReactQuery[TanStack Query]
     end
     
     subgraph backend [Backend Services]
-        API[Next.js API Routes]
+        API[Next.js API Routes + tRPC]
         Workers[BullMQ Workers]
-        AIService[AI Service - Python/FastAPI]
+        AIService[AI Service - Python FastAPI]
     end
     
     subgraph data [Data Layer]
-        Postgres[(PostgreSQL)]
-        Redis[(Redis)]
+        Postgres[(PostgreSQL - Neon)]
+        Redis[(Redis - Upstash)]
         Pinecone[(Pinecone Vector DB)]
-        S3[(S3/R2 Storage)]
+        S3[(Cloudflare R2)]
     end
     
     subgraph external [External Services]
-        LLM[OpenAI/Claude API]
-        Enrichment[Clearbit/Apollo APIs]
-        Email[Resend/SendGrid]
+        LLM[OpenAI GPT-4o / Claude]
+        Enrichment[Clearbit / Apollo APIs]
+        Email[Resend Email]
         LinkedIn[LinkedIn API]
+        Twilio[Twilio SMS]
+        Stripe[Stripe Billing]
     end
     
     frontend --> backend
@@ -332,7 +383,9 @@ flowchart TB
 3. **Multi-Tenant from Day 1**: Design schema with `organization_id` on all tables for SaaS readiness
 4. **API-First**: All features accessible via API for integrations and automation
 
-## Competitive Differentiation Strategy
+---
+
+## Competitive Differentiation
 
 | Competitor | Their Strength | Our Differentiation |
 
@@ -350,7 +403,9 @@ flowchart TB
 
 **Unique Value Proposition**: AI-native platform built specifically for service agencies that combines Clay-style data enrichment, Instantly-style outbound, and Drift-style inbound with autonomous AI SDR agents.
 
-## Updated Implementation Roadmap
+---
+
+## Implementation Roadmap
 
 ### Phase 1: Foundation (Weeks 1-4)
 
@@ -404,6 +459,8 @@ flowchart TB
 - GDPR/CCPA compliance suite
 - Performance optimization and polish
 
+---
+
 ## Risk Mitigation
 
 | Risk | Mitigation Strategy |
@@ -421,6 +478,8 @@ flowchart TB
 | **Data Staleness** | Regular re-verification; track data freshness; alert on bounce rates |
 
 | **Scope Creep** | Strict MVP focus; user feedback before new features; weekly prioritization |
+
+---
 
 ## Success Metrics
 
@@ -441,6 +500,8 @@ flowchart TB
 | Email Deliverability | 90% | 95% |
 
 | Cost Per Lead | $15 | $8 |
+
+---
 
 ## Cost Estimate (Monthly)
 
@@ -469,3 +530,41 @@ flowchart TB
 | **Total MVP** | **$400-1,100/month** |
 
 This is significantly more cost-effective than purchasing multiple tools (Apollo $99+, Instantly $97+, Drift $2,500+, etc.).
+
+---
+
+## How This Helps Generate More Projects
+
+| Capability | Business Impact |
+
+|------------|-----------------|
+
+| **Inbound Capture** | Capture 40-60% more leads from website visitors who never fill forms |
+
+| **AI Personalization** | 2-3x higher response rates with hyper-relevant outreach |
+
+| **Multi-Channel** | 3x better reach by meeting prospects where they are |
+
+| **Intent Signals** | 5x higher conversion by targeting buyers in active buying mode |
+
+| **AI SDR Agent** | 24/7 qualification without hiring; scale without linear headcount |
+
+| **Predictive Scoring** | Focus on highest-probability leads; improve win rates |
+
+| **Automation** | Reduce manual work by 70-80%; never miss a follow-up |
+
+| **Analytics** | Data-driven optimization; invest in what works |
+
+---
+
+## Next Steps
+
+1. **Approve this plan** to begin implementation
+2. **Set up project structure** with Next.js 15 + TypeScript
+3. **Configure database schema** with Prisma
+4. **Implement authentication** with Clerk
+5. **Build core CRM** features (leads, deals, pipeline)
+6. **Integrate first data source** (manual import)
+7. **Add email sending** capability
+8. **Build analytics dashboard**
+9. **Iterate based on usage data**
